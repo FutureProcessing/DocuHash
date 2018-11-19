@@ -1,0 +1,32 @@
+{
+  "name": "docuhash",
+  "version": "1.0.0",
+  "description": "Storing Files on IPFS with storing their hashes in smart contract deployed to Eth blockchain",
+  "repository": {
+    "type": "git",
+    "url": "git@git.future-processing.com:cplc/ML-DLT-CPLC.git"
+  },
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "IPFS",
+    "ETH",
+    "Storing",
+    "files"
+  ],
+  "author": "CPLC",
+  "license": "MIT",
+  "dependencies": {
+    "crypto-js": "^3.1.9-1",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "ipfs-api": "^25.0.0",
+    "moment": "^2.22.2",
+    "truffle": "^5.0.0-beta.1",
+    "truffle-hdwallet-provider": "^1.0.0-web3one.0",
+    "web3": "^1.0.0-beta.36"
+  }
+}
