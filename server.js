@@ -5,7 +5,7 @@ const fs = require('fs');
 const moment = require('moment');
 const app = express();
 const hsService = require('./services/hs-service');
-const web3Utils = require('./services/web3-Utils');
+const web3Utils = require('./services/web3-utils');
 const CryptoJS = require("crypto-js");
 const bodyParser = require('body-parser');
 
