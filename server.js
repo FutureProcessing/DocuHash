@@ -6,30 +6,34 @@ const moment = require('moment');
 const app = express();
 const hsService = require('./services/hs-service');
 const web3Utils = require('./services/web3-Utils');
-const SHA256 = require("crypto-js/sha256");
+const CryptoJS = require("crypto-js");
+const bodyParser = require('body-parser');
 
 const ipfs = ipfsAPI(CONFIG.ipfs_api_address, CONFIG.ipfs_api_port, {protocol: 'http'});
 
-app.get('/addfile', async function(req, res) {
+app.use(bodyParser.raw({limit: '5mb'}));
+app.use(bodyParser.json());
 
-	if (!req.query.path){
-		res.status = 400;
-		res.send({msg: 'Please provide file "path" as parameter!'});	
-		return;
-	} 
-	
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', CONFIG.clientUrl);
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Content-Type');
+    next();
+});
+
+app.post('/addfile', async function(req, res) {
 	try 
 	{	
 		//## prepare data
-		var fileContent = fs.readFileSync(req.query.path,"utf-8");
-		var fileToAdd = Buffer.from(fileContent);
-		var fileHash = SHA256(fileContent).toString();
+		const fileToAdd = req.body;
+		const fileContentWordArray = CryptoJS.lib.WordArray.create(req.body);
+		const fileHash = CryptoJS.SHA256(fileContentWordArray).toString();
 		
-		var epochTime = Math.round(moment().format('X'));
+		const epochTime = Math.round(moment().format('X'));
 		console.log(moment().format('X'));
 		
 		//## save to ifps
-		var fileIPFS = await ipfs.files.add(fileToAdd);
+		const fileIPFS = await ipfs.files.add(fileToAdd);
 		console.log('Added to ipfs : ' + fileIPFS[0].hash);
 		
 		//## save to blockchain
@@ -37,20 +41,23 @@ app.get('/addfile', async function(req, res) {
 		const data = await hsService.add(fileIPFS[0].hash, fileHash, epochTime);
 		
 		console.log('Added to ETH Blockchain!');
-		res.status = 200;
-		res.send({tx: data, ipfsHash: fileIPFS[0].hash, fileHash: fileHash});
+		res.status(200).send(JSON.stringify({tx: data, ipfsHash: fileIPFS[0].hash, fileHash: fileHash}));
 	} catch (err) {
 		console.log(err);
-		res.status = 500;
-		res.send();
+
+		if(err.message.includes("revert")) {
+			res.status(409).send();
+		} 
+		else {
+			res.status(500).send();
+		}
 	}
 })
 
 app.get('/getfile', async function(req, res) {
     
 	if (!req.query.hash){
-		res.status = 400;
-		res.send({msg: 'Please provide file path!'});
+		res.status(400).send({msg: 'Please provide file hash!'});
 		return;
 	}
 	
@@ -60,37 +67,25 @@ app.get('/getfile', async function(req, res) {
 		const response = await hsService.get(hash);
 		if(response[0].exists == false) {
 			console.log('File hash not found in smart contract!');
-			res.status = 404;
-			res.send({msg: 'Not found'});
+			res.status(404).send("Not found!");
 			return;
 		}
 		console.log('Found in ETH Blockchain: ' + web3Utils.bytesToString(response[0].filehash));
 		
-		var ipfsHash = web3Utils.bytesToString(response[0].ipfshash);
+		const ipfsHash = web3Utils.bytesToString(response[0].ipfshash);
 		//## get from ipfs
-		var files = await ipfs.files.get(ipfsHash);
+		const files = await ipfs.files.get(ipfsHash);
 		files.forEach((file) => {
 			console.log('Found in IPFS: ' + file.path);
-		//	console.log(file.content.toString('utf8'));
-		});
-		
-		//## prepare data to return
-		let data = [];
-		data.push({ 
-			hash: hash,
-			unixTimeAdded: response[0].dateAdded,
-			exists: response[0].exists,
-			url: CONFIG.ipfs_url + ipfsHash 
+			//console.log(file.content.toString('utf8'));
 		});
 
 		//## return
 		console.log('File found in IPFS and ETH Blockchain!');
-		res.status = 200;
-		res.send(data);
+		res.status(200).send(JSON.stringify({hash: hash, unixTimeAdded: response[0].dateAdded, exists: response[0].exists, url: CONFIG.ipfs_url + ipfsHash}));
 	} catch (err) {
 		console.log(err);
-		res.status = 500;
-		res.send();
+		res.status(500).send();
 	}
 })
 
