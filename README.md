@@ -83,7 +83,7 @@ DocuHash has been deployed to the MS Azure cloud. The following steps can be fol
     - `client_app_name` - name of the client application. Needs to be globally unique.
     - `ipfs_app_name` - name of the IPFS application. Needs to be globally unique.
     - `eth_app_name` - name of the ETH application. Needs to be globally unique.
-6. Modify the `Dockerfile` located in the repo's root directory. In the `CMD` command, change `--network demo` to `--network production`.
+6. Modify the `dockerEntrypoint.sh` file located in the repo's root directory. In the third line, change `--network demo` to `--network production`.
 7. Navigate to the `deploy` directory and run `.\deploy.ps1`. Deployment may take up to several minutes, depending on your Internet connection speed and the processing power of your machine.
 8. Once deployment is finished, navigate in your browser to `https://<client_app_name>.azurewebsites.net`. Wait for a few minutes and refresh the page once in a while while waiting for the containers to spin up. Do not worry about potential errors initially showing in the browser window. Eventually the application should appear in the browser. If the application doesn't start after several minutes, consider checking logs for each of the app services created during deployment in order to pinpoint the issue.
 
