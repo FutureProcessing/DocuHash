@@ -1,0 +1,104 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "defaultValue": "northeurope",
+            "type": "string"
+        },
+        "resource_group_name": {
+            "defaultValue": "docuhasharm",
+            "type": "string"
+        },
+        "service_plan_name": {
+            "defaultValue": "docuhashasp",
+            "type": "string"
+        },
+        "container_registry_name": {
+            "defaultValue": "docuhashcr",
+            "type": "string"
+        },
+        "client_app_repo_name": {
+            "defaultValue": "docuhash/application",
+            "type": "string"
+        },
+        "ipfs_app_repo_name": {
+            "defaultValue": "docuhash/ipfs",
+            "type": "string"
+        },
+        "client_app_name": {
+            "defaultValue": "docuhasharm",
+            "type": "string"
+        },
+        "ipfs_app_name": {
+            "defaultValue": "docuhasharmipfs",
+            "type": "string"
+        },
+        "eth_app_name": {
+            "defaultValue": "docuhasharmeth",
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ContainerRegistry/registries",
+            "apiVersion": "2020-11-01-preview",
+            "name": "[parameters('container_registry_name')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic"
+            },
+            "properties": {
+                "adminUserEnabled": true,
+                "policies": {
+                    "quarantinePolicy": {
+                        "status": "disabled"
+                    },
+                    "trustPolicy": {
+                        "type": "Notary",
+                        "status": "disabled"
+                    },
+                    "retentionPolicy": {
+                        "days": 7,
+                        "status": "disabled"
+                    }
+                },
+                "encryption": {
+                    "status": "disabled"
+                },
+                "dataEndpointEnabled": false,
+                "publicNetworkAccess": "Enabled",
+                "networkRuleBypassOptions": "AzureServices",
+                "zoneRedundancy": "Disabled",
+                "anonymousPullEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('service_plan_name')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "B1",
+                "tier": "Basic",
+                "size": "B1",
+                "family": "B",
+                "capacity": 1
+            },
+            "kind": "linux",
+            "properties": {
+                "perSiteScaling": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "freeOfferExpirationTime": "2021-07-16T12:06:58.9666667",
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        }
+    ]
+}

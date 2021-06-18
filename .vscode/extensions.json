@@ -1,0 +1,17 @@
+{
+    "recommendations": [
+        "2gua.rainbow-brackets",
+        "christian-kohler.path-intellisense",
+        "dbaeumer.vscode-eslint",
+        "dsznajder.es7-react-js-snippets",
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "stylelint.vscode-stylelint",
+        "msjsdiag.debugger-for-chrome",
+        "Orta.vscode-jest",
+        "streetsidesoftware.code-spell-checker",
+        "wix.vscode-import-cost",
+        "mike-co.import-sorter"
+    ]
+}
