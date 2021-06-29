@@ -1,0 +1,11 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background-image: linear-gradient(to top, #efffa3, #bff2a2, #90e3a6, #60d2ac, #27c0b2);
+
+    > *:not(:first-child):not(:last-child) {
+        z-index: 1;
+    }
+}

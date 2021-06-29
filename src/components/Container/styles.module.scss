@@ -1,0 +1,20 @@
+@import "~styles/variables.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    background: $color-opaque-white;
+    box-shadow: $shadow-dark-blue;
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+    width: 100%;
+
+    &__title {
+        text-align: center;
+        font-weight: normal;
+        color: $color-light-blue;
+        font-size: 1.75rem;
+        margin: 0 0 1rem 0;
+    }
+}

@@ -1,0 +1,21 @@
+@import "~styles/variables.scss";
+
+.hash-list-section {
+    &__row {
+        display: flex;
+        color: $color-dark-blue;
+        transition: color 0.5s;
+
+        &--highlighted {
+            color: $color-orange;
+        }
+    }
+
+    &__hash-index {
+        margin-right: 1.5rem;
+    }
+
+    &__hash {
+        word-break: break-word;
+    }
+}

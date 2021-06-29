@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "northeurope"
+        },
+        "resource_group_name": {
+            "value": "docuhash"
+        },
+        "service_plan_name": {
+            "value": "docuhashasp"
+        },
+        "container_registry_name": {
+            "value": "docuhashcr"
+        },
+        "client_app_repo_name": {
+            "value": "docuhash/application"
+        },
+        "ipfs_app_repo_name": {
+            "value": "docuhash/ipfs"
+        },
+        "client_app_name": {
+            "value": "docuhash"
+        },
+        "ipfs_app_name": {
+            "value": "docuhashipfs"
+        },
+        "eth_app_name": {
+            "value": "docuhasheth"
+        }
+    }
+  }

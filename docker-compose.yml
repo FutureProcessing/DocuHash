@@ -1,0 +1,27 @@
+services:
+    eth:
+        image: trufflesuite/ganache-cli:v6.12.2
+        ports:
+            - "8545:8545"
+    ipfs:
+        image: ipfs/go-ipfs:v0.8.0-rc1
+        entrypoint:
+            - /bin/sh
+            - -c
+            - (ipfs init && ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]' && ipfs config --json Addresses.API '"/ip4/0.0.0.0/tcp/5001"' && ipfs config --json Addresses.Gateway '"/ip4/0.0.0.0/tcp/8080"' && ipfs bootstrap rm --all && ipfs daemon) || ipfs daemon
+        environment:
+            - IPFS_PROFILE=server
+            - IPFS_PATH=/ipfsdata
+        volumes:
+            - ./data/ipfs:/ipfsdata
+        ports:
+            - "4001:4001" # swarm node
+            - "5001:5001" # API/webUI
+            - "8080:8080" # gateway
+    application:
+        build: ./
+        ports:
+            - "3000:3000"
+        depends_on:
+            - eth
+            - ipfs

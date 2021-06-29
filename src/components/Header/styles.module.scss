@@ -1,0 +1,35 @@
+@import "~styles/variables.scss";
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: $color-opaque-white;
+    box-shadow: $shadow-dark-blue;
+    width: 100%;
+    padding: 1rem 0;
+
+    &__title,
+    &__subtitle,
+    &__web3-info {
+        text-align: center;
+        padding: 0 0.5rem;
+    }
+
+    &__title,
+    &__subtitle {
+        color: $color-dark-blue;
+        margin-bottom: 0.5em;
+    }
+
+    &__title {
+        font-size: 1.25rem;
+    }
+
+    &__images {
+        > img {
+            max-height: 2rem;
+            margin: 0 0.5rem;
+        }
+    }
+}
