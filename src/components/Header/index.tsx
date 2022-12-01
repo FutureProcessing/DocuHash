@@ -10,7 +10,7 @@ const Header = () => (
             Demo showing the possibility of storing files in a distributed file system and their hashes with some basic
             info in blockchain.
         </div>
-        <div className={styles["header__subtitle"]}>Following technologies have been used:</div>
+        <div className={styles["header__subtitle"]}>The following technologies have been used:</div>
         <div className={styles["header__images"]}>
             <img src={EthereumLogo} alt="Ethereum logo" />
             <img src={IPFSLogo} alt="IPFS logo" />
